@@ -28,7 +28,7 @@ export default function HomeScreen() {
 
         <View style={styles.getStartedContainer}>
           <DevelopmentModeNotice />
-          <Text style={styles.getStartedText}>Merci !</Text>
+          <Text style={styles.getStartedText}>Merci !!!</Text>
         </View>
       </ScrollView>
     </View>
