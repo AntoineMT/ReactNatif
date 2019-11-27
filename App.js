@@ -1,34 +1,24 @@
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import React, { useState } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View,  Animated, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-
+import React, { useState, useEffect } from 'react';
 import AppNavigator from './navigation/AppNavigator';
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
-      <AppLoading
-        startAsync={loadResourcesAsync}
-        onError={handleLoadingError}
-        onFinish={() => handleFinishLoading(setLoadingComplete)}
-      />
-    );
-  } else {
-    return (
-      <View style={styles.container}>
+      <FadeInView style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AppNavigator />
-      </View>
+      </FadeInView>
     );
-  }
 }
+
+
 
 async function loadResourcesAsync() {
   await Promise.all([
@@ -62,3 +52,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+const FadeInView = (props) => {
+  const [fadeAnim] = useState(new Animated.Value(0))  // Initial value for opacity: 0
+
+  React.useEffect(() => {
+    Animated.timing(
+      fadeAnim,
+      {
+        toValue: 1,
+        duration: 10000,
+      }
+    ).start();
+  }, [])
+
+  return (
+    <Animated.View                 // Special animatable View
+      style={{
+        ...props.style,
+        flex: fadeAnim,         // Bind opacity to animated value
+      }}
+    >
+      {props.children}
+    </Animated.View>
+  );
+}
