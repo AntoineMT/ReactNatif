@@ -4,6 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
+import ApiScreen from '../screens/ApiScreen';
 import MapsScreen from '../screens/ExpoMapsView';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -35,6 +36,30 @@ HomeStack.navigationOptions = {
 };
 
 HomeStack.path = '';
+
+const ApiStack = createStackNavigator(
+  {
+    Api: ApiScreen,
+  },
+  config
+);
+
+ApiStack.navigationOptions = {
+  //Api
+  tabBarLabel: 'Api',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-api${focused ? '' : '-outline'}`
+          : 'ios-api'
+      }
+    />
+  ),
+};
+
+ApiStack.path = '';
 
 const LinksStack = createStackNavigator(
   {
@@ -73,7 +98,9 @@ SettingsStack.path = '';
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
+  ApiStack,
   SettingsStack,
+
 });
 
 tabNavigator.path = '';
